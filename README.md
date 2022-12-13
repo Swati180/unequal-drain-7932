@@ -5,6 +5,7 @@ Swati Parmar -> customer
   <br>
   <br>
 
+
 Gaurav -> admin
   <br>
   admin/register
@@ -15,6 +16,8 @@ Gaurav -> admin
   <br>
 /admin/delete
   <br>
+  
+  
 Md Ikram -> plant,seeds
   SEED
     <br>
@@ -36,6 +39,8 @@ Md Ikram -> plant,seeds
       <br>
     plant/getById
       <br>
+      
+      
 Rohini -> planter
   PLANTER
     <br>
