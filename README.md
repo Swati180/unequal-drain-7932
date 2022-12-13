@@ -7,6 +7,7 @@ Gaurav -> admin
   /admin/login (transient)
   /admin/update
   /admin/delete
+  <br>
 Md Ikram -> plant,seeds
   //SEED
      /seeds/create
@@ -18,12 +19,16 @@ Md Ikram -> plant,seeds
     /plant/update
     /plant/delete
     /plant/getById
+      <br>
+
 Rohini -> planter
   //PLANTER
     /planter/create
     /planter/update/
     /planter/delete/
     /planter/getById/
+      <br>
+
 Ajitab ->order 
    order/create
    order/delete
