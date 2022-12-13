@@ -7,10 +7,10 @@ Swati Parmar -> customer
 
 Gaurav -> admin
   <br>
-  /admin/register
+  admin/register
     <br>
 
-  /admin/login (transient)
+  admin/login (transient)
   <br>
 
 /admin/update
@@ -19,7 +19,7 @@ Gaurav -> admin
 /admin/delete
   <br>
 Md Ikram -> plant,seeds
-  //SEED
+  SEED
     <br>
 
      /seeds/create
@@ -50,7 +50,7 @@ Md Ikram -> plant,seeds
       <br>
 
 Rohini -> planter
-  //PLANTER
+  PLANTER
     <br>
     /planter/create
       <br>
