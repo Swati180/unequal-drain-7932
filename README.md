@@ -9,46 +9,33 @@ Gaurav -> admin
   <br>
   admin/register
     <br>
-
   admin/login (transient)
   <br>
-
 /admin/update
   <br>
-
 /admin/delete
   <br>
 Md Ikram -> plant,seeds
   SEED
     <br>
-
-     /seeds/create
+     seeds/create
   <br>
-
-/seed/update
+  seed/update
   <br>
-
-     /seed/delete
-       <br>
-
-     /seed/getById
-       <br>
-
-    //PLANT
+ seed/delete
+   <br>
+  seed/getById
+   <br>
+  PLANT
+    <br>
+  plant/create
+    <br>
+  plant/update
       <br>
-
-    /plant/create
+    plant/delete
       <br>
-
-    /plant/update
+    plant/getById
       <br>
-
-    /plant/delete
-      <br>
-
-    /plant/getById
-      <br>
-
 Rohini -> planter
   PLANTER
     <br>
