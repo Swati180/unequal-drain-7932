@@ -1,5 +1,11 @@
 package com.treehouse.service.Impl;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.treehouse.Repo.CustomerLoginRepo;
 import com.treehouse.Repo.CustomerRepo;
 import com.treehouse.exception.CustomerExecption;
@@ -8,13 +14,8 @@ import com.treehouse.model.CustomerLogin;
 import com.treehouse.model.DTO.CustomerDTO;
 import com.treehouse.model.DTO.CustomerLoginDto;
 import com.treehouse.service.CustomerService;
-import net.bytebuddy.utility.RandomString;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Random;
+import net.bytebuddy.utility.RandomString;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
