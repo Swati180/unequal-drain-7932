@@ -38,6 +38,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer updateCustomer(CustomerDTO customerDTO, Integer customerId) throws CustomerExecption {
+
+        Customer customer2 = new Customer();
+
+
+
         return null;
     }
 
