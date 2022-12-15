@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerLoginRepo extends JpaRepository<CustomerLogin,Integer> {
+    public CustomerLogin findByKey(String key);
 }
