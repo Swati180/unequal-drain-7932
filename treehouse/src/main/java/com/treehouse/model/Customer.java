@@ -1,10 +1,6 @@
 package com.treehouse.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,11 +10,12 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@ToString
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer customerId;
-    private String name;
+    private String firstname;
     private String lastName;
     @Column(unique = true)
     private String email;
