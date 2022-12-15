@@ -1,13 +1,27 @@
 package com.treehouse.service;
 
-import com.treehouse.exception.CustomerExecption;
+import java.util.List;
+
 import com.treehouse.exception.PlantException;
-import com.treehouse.model.Customer;
-import com.treehouse.model.DTO.CustomerDTO;
 import com.treehouse.model.Plant;
 
 public interface PlantService {
 
-    public Plant registerCustomer(Plant plant) throws PlantException;
+    public Plant addPlant(Plant plant) throws PlantException;
+    
+    public Plant updatePlant(Plant plant)throws PlantException;
+    
+    public Plant deletePlant(Integer plantId)throws PlantException;
+    
+    public Plant viewPlant(Integer plantId)throws PlantException;
+    
+    public List<Plant> viewPlant(String commonName)throws PlantException;
+    
+    public List<Plant> viewAllPlants()throws PlantException;
+    
+    public List<Plant> viewAllPlant(String typeOfPlant)throws PlantException;
+    
+    
+    
 
 }

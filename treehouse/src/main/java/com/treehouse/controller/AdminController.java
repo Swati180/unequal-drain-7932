@@ -59,7 +59,7 @@ public class AdminController {
 
 	@PostMapping("/plant/register")
 	public ResponseEntity<Plant> register(@RequestBody Plant plant)throws PlantException{
-		return new ResponseEntity<Plant>(plantService.registerCustomer(plant),HttpStatus.CREATED);
+		return new ResponseEntity<Plant>(plantService.addPlant(plant),HttpStatus.CREATED);
 	}
 
 
