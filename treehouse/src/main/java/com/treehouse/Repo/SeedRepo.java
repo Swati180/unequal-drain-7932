@@ -13,6 +13,5 @@ public interface SeedRepo extends JpaRepository<Seeds,Integer>{
 
 	public List<Seeds> findByCommonName(String commonName);
 	
-	
 	public List<Seeds> findByTypeOfSeeds(String typeOfSeeds);
 }
