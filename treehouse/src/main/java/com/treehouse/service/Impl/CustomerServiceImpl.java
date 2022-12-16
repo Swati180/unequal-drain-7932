@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import com.treehouse.Repo.*;
 import com.treehouse.model.*;
+import com.treehouse.model.DTO.PlantDto;
+import com.treehouse.model.DTO.SeedsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,12 @@ public class CustomerServiceImpl implements CustomerService {
     private PlantRepo plantRepo;
     @Autowired
     private BucketRepo bucketRepo;
+    @Autowired
+    private SeedRepo seedRepo;
+    @Autowired
+    PlantDtoRepo plantDtoRepo;
+    @Autowired
+    SeedsDtoRepo seedsDtoRepo;
     @Override
     public Customer registerCustomer(CustomerDTO customer) throws CustomerExecption {
 
@@ -139,49 +147,90 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerLogin customerLogin =  this.checkPermission(key);
         Optional<Plant> optionalPlant = plantRepo.findById(plantId);
         if(customerLogin != null && optionalPlant.isPresent()){
-          Optional<Customer> optionalCustomer1 = customerRepo.findById(customerLogin.getCustomerId());
-          Bucket bucket = optionalCustomer1.get().getBucket();
-          Plant plant= optionalPlant.get();
-          boolean flag=false;
-          if(bucket != null){
-              plant.setPlantQuantity(1);
-              for(Plant i:bucket.getPlants()){
-                  if(i.getPlantId()==plantId){
-                      flag=true;
-                  }
-              }
-              if(flag){
-                  bucket.setPlantQuantity(bucket.getPlantQuantity()+1);
-                  bucket.setTotalItems(bucket.getTotalItems()+1);
-                  bucket.setTotalPrice(bucket.getTotalPrice()+plant.getPlantCost());
-                  optionalCustomer1.get().setBucket(bucket);
-                  return customerRepo.save(optionalCustomer1.get()).getBucket();
-              }
-              else{
-                  bucket.getPlants().add(plant);
-                  bucket.setPlantQuantity(bucket.getPlantQuantity()+1);
-                  bucket.setTotalItems(bucket.getTotalItems()+1);
-                  bucket.setTotalPrice(bucket.getTotalPrice()+plant.getPlantCost());
-                  optionalCustomer1.get().setBucket(bucket);
-                  return customerRepo.save(optionalCustomer1.get()).getBucket();
-              }
+            Optional<Customer> optionalCustomer1 = customerRepo.findById(customerLogin.getCustomerId());
+            Bucket bucket = optionalCustomer1.get().getBucket();
+            Plant plants= optionalPlant.get();
+            PlantDto plant=new PlantDto();
+            plant.setPlantId(plants.getPlantId());
+            plant.setPlantCost(plants.getPlantCost());
+//            plant.setPlantQuantity(plants.getPlantQuantity());
+            plant.setPlantHeight(plants.getPlantHeight());
+            plant.setPlantSpread(plants.getPlantSpread());
+            plant.setBloomTime(plants.getBloomTime());
+            plant.setCommonName(plants.getCommonName());
+            plant.setDifficultyLevel(plants.getDifficultyLevel());
+            plant.setMedicinalOrCulinaryUse(plants.getMedicinalOrCulinaryUse());
+            plant.setPlantsStock(plants.getPlantsStock());
+            plant.setTypeOfPlant(plants.getTypeOfPlant());
+
+            boolean flag=false;
+            int count=0;
+            if(bucket != null){
+                for(PlantDto i:bucket.getPlants()){
+                    if(i.getPlantId()==plantId){
+                        flag=true;
+                        count+=1;
+
+                    }
+                }
+                if(flag){
+                    Optional<PlantDto> plantDtoOptional=plantDtoRepo.findById(plantId);
+                    plant=plantDtoOptional.get();
+                    count+=plant.getPlantQuantity();
+                    plant.setPlantCost(plant.getPlantCost()+plants.getPlantCost());
+                    plant.setPlantQuantity(count);
+                    if(bucket.getPlantQuantity()==null){
+                        bucket.setPlantQuantity(1);
+                    }
+                    else{
+                        bucket.setPlantQuantity(bucket.getPlantQuantity()+1);
+                    }
+                    plantDtoRepo.save(plant);
+
+                    bucket.setPlantPrice(bucket.getPlantPrice()+plants.getPlantCost());
+                    bucket.setTotalItems(bucket.getTotalItems()+1);
+                    bucket.setTotalPrice(bucket.getTotalPrice()+plants.getPlantCost());
+                    optionalCustomer1.get().setBucket(bucket);
+                    return customerRepo.save(optionalCustomer1.get()).getBucket();
+                }
+                else{
+                    plant.setPlantQuantity(1);
+                    plantDtoRepo.save(plant);
+                    bucket.getPlants().add(plant);
+                    bucket.setPlantPrice(plant.getPlantCost());
+                    if(bucket.getPlantQuantity()!=null){
+                        bucket.setPlantQuantity(bucket.getPlantQuantity()+1);
+
+                    }
+                    else{
+                        bucket.setPlantQuantity(1);
+
+                    }
+
+                    bucket.setTotalItems(bucket.getTotalItems()+1);
+                    bucket.setTotalPrice(bucket.getTotalPrice()+plant.getPlantCost());
+                    optionalCustomer1.get().setBucket(bucket);
+                    return customerRepo.save(optionalCustomer1.get()).getBucket();
 
 
-
-          }else{
-              Bucket bucket1 = new Bucket();
-              bucket1.getPlants().add(plant);
-              bucket1.setPlantQuantity(1);
-              bucket1.setTotalItems(1);
-              bucket1.setTotalPrice(plant.getPlantCost());
-              bucket1.setPlantPrice(plant.getPlantCost());
-              optionalCustomer1.get().setBucket(bucket1);
-              return customerRepo.save(optionalCustomer1.get()).getBucket();
+                }
 
 
-          }
+            }else{
+                plant.setPlantQuantity(1);
+                plantDtoRepo.save(plant);
+                Bucket bucket1 = new Bucket();
+                bucket1.getPlants().add(plant);
+                bucket1.setPlantQuantity(1);
+                bucket1.setTotalItems(1);
+                bucket1.setTotalPrice(plant.getPlantCost());
+                bucket1.setPlantPrice(plant.getPlantCost());
+                optionalCustomer1.get().setBucket(bucket1);
+                return customerRepo.save(optionalCustomer1.get()).getBucket();
+
+
+            }
         }
-
         throw new CustomerExecption("Either Your Login Key or Plant detail is not correct");
     }
 
@@ -191,7 +240,155 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Bucket addSeedsToBucket(Seeds seeds, String key) throws CustomerExecption {
+    public Bucket addSeedsToBucket(Integer seedsId, String key) throws CustomerExecption {
+        CustomerLogin customerLogin =  this.checkPermission(key);
+        Optional<Seeds> optionalSeeds = seedRepo.findById(seedsId);
+        if(customerLogin != null && optionalSeeds.isPresent()){
+            Optional<Customer> optionalCustomer1 = customerRepo.findById(customerLogin.getCustomerId());
+            Bucket bucket = optionalCustomer1.get().getBucket();
+            Seeds seed= optionalSeeds.get();
+            SeedsDto seeds = new SeedsDto();
+            seeds.setSeedsId(seed.getSeedsId());
+            seeds.setSeedsStock(seed.getSeedsStock());
+            seeds.setSeedsDescription(seed.getSeedsDescription());
+            seeds.setBloomTime(seed.getBloomTime());
+            seeds.setSeedsPerPacket(seed.getSeedsPerPacket());
+            seeds.setTypeOfSeeds(seed.getTypeOfSeeds());
+            seeds.setSeedsCost(seed.getSeedsCost());
+            seeds.setCommonName(seed.getCommonName());
+            seeds.setDifficultyLevel(seed.getTemperature());
+            seeds.setWatering(seed.getWatering());
+            seeds.setTemperature(seed.getTemperature());
+
+            boolean flag=false;
+            if(bucket != null){
+                for(SeedsDto i:bucket.getSeeds()){
+                    if(i.getSeedsId()==seedsId){
+                        flag=true;
+                    }
+                }
+                if(flag){
+                    Optional<SeedsDto> seeds1 = seedsDtoRepo.findById(seedsId);
+                    seeds = seeds1.get();
+                    seeds.setSeedsQuantity(seeds.getSeedsQuantity()+1);
+                    seeds.setSeedsCost(seeds.getSeedsCost()+seed.getSeedsCost());
+                    seedsDtoRepo.save(seeds);
+                    bucket.setSeedsPrice(bucket.getSeedsPrice()+seed.getSeedsCost());
+                    if(bucket.getSeedsQuantity()==null){
+                        bucket.setSeedsQuantity(1);
+                    }
+                    else{
+                        bucket.setSeedsQuantity(bucket.getSeedsQuantity()+1);
+                    }
+                    bucket.setTotalItems(bucket.getTotalItems()+1);
+                    bucket.setTotalPrice(bucket.getTotalPrice()+seed.getSeedsCost());
+                    optionalCustomer1.get().setBucket(bucket);
+                    return customerRepo.save(optionalCustomer1.get()).getBucket();
+                }
+                else{
+                    seeds.setSeedsQuantity(1);
+                    seedsDtoRepo.save(seeds);
+                    bucket.getSeeds().add(seeds);
+                    if(bucket.getSeeds()!=null){
+                        bucket.setSeedsQuantity(bucket.getSeedsQuantity()+1);
+                        bucket.setTotalItems(bucket.getTotalItems()+1);
+                        bucket.setSeedsPrice(bucket.getSeedsPrice()+seed.getSeedsCost());
+
+                    }else{
+                        bucket.setSeedsQuantity(1);
+                        bucket.setTotalItems(1);
+                        bucket.setSeedsPrice(seed.getSeedsCost());
+
+                    }
+                    bucket.setTotalPrice(bucket.getTotalPrice()+seeds.getSeedsCost());
+                    optionalCustomer1.get().setBucket(bucket);
+                    return customerRepo.save(optionalCustomer1.get()).getBucket();
+                }
+
+
+
+            }else{
+                seeds.setSeedsQuantity(1);
+                seedsDtoRepo.save(seeds);
+                Bucket bucket1 = new Bucket();
+                bucket1.getSeeds().add(seeds);
+                bucket1.setSeedsQuantity(1);
+                bucket1.setTotalItems(1);
+                bucket1.setTotalPrice(seeds.getSeedsCost());
+
+                bucket1.setSeedsPrice(seeds.getSeedsCost());
+
+                optionalCustomer1.get().setBucket(bucket1);
+                System.out.println(bucket1);
+                return customerRepo.save(optionalCustomer1.get()).getBucket();
+
+
+            }
+        }
+        throw new CustomerExecption("Either Your Login Key or Seeds detail is not correct");
+
+    }
+
+    @Override
+    public Bucket decreaseQuantityOfSeeds(Integer seedsID, String key) throws CustomerExecption {
+        CustomerLogin customerLogin = this.checkPermission(key);
+        Optional<Seeds> optionalSeeds = seedRepo.findById(seedsID);
+        Seeds seeds = optionalSeeds.get();
+        if (customerLogin != null && optionalSeeds.isPresent()) {
+            Optional<Customer> optionalCustomer1 = customerRepo.findById(customerLogin.getCustomerId());
+            Bucket bucket = optionalCustomer1.get().getBucket();
+            boolean flag=false;
+            int count=0;
+            int check=0;
+            if (bucket != null) {
+                if (bucket.getSeedsQuantity() > 0) {
+                    System.out.println(bucket+" bucket===============================");
+
+                    List<SeedsDto> list=bucket.getSeeds();
+                    for(SeedsDto i:list){
+                        if(i.getSeedsId()==seedsID){
+                            bucket.setSeedsQuantity(bucket.getSeedsQuantity() - 1);
+                            bucket.setSeedsPrice(bucket.getSeedsPrice() - seeds.getSeedsCost());
+                            bucket.setTotalPrice(bucket.getTotalPrice() - seeds.getSeedsCost());
+                            bucket.setTotalItems(bucket.getTotalItems() - 1);
+                            if(i.getSeedsQuantity()>1){
+                                i.setSeedsQuantity(i.getSeedsQuantity()-1);
+                                i.setSeedsCost(i.getSeedsCost()-seeds.getSeedsCost());
+
+                            }
+                            else{
+                                flag=true;
+                                check=count;
+                            }
+                            count++;
+                        }
+                        if(flag){
+                            list.remove(check);
+
+                        }
+                        optionalCustomer1.get().setBucket(bucket);
+//                        System.out.println(bucket1);
+                        return customerRepo.save(optionalCustomer1.get()).getBucket();
+                    }
+                } else {
+                    throw new CustomerExecption("Seeds not present");
+                }
+            } else {
+                throw new CustomerExecption("Cart is Empty");
+            }
+        }
+        throw new CustomerExecption("Empty");
+
+
+    }
+
+    @Override
+    public Bucket decreaseQuantityOfPlant(Integer plantID, String key) throws CustomerExecption {
+        return null;
+    }
+
+    @Override
+    public Bucket decreaseQuantityOfPlanter(Integer planterID, String key) throws CustomerExecption {
         return null;
     }
 

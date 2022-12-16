@@ -32,12 +32,5 @@ public class Planter {
     private String  PlanterShape;
     private Integer PlanterStock;
     private Integer PlanterCost;
-    
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Plant plants;
-    
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Seeds seeds;
-    
-    
+
 }

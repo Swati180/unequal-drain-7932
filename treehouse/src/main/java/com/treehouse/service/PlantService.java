@@ -7,11 +7,11 @@ import com.treehouse.model.Plant;
 
 public interface PlantService {
 
-    public Plant addPlant(Plant plant) throws PlantException;
+    public Plant addPlant(Plant plant,String key) throws PlantException;
     
-    public Plant updatePlant(Plant plant)throws PlantException;
+    public Plant updatePlant(Plant plant,String key)throws PlantException;
     
-    public Plant deletePlant(Integer plantId)throws PlantException;
+    public Plant deletePlant(Integer plantId,String key)throws PlantException;
     
     public Plant viewPlant(Integer plantId)throws PlantException;
     

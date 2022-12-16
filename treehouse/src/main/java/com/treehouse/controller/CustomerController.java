@@ -46,10 +46,25 @@ public class CustomerController {
         return new ResponseEntity<CustomerLogin>(customerService.logoutCustomer(key),HttpStatus.OK);
    }
 
+   // PLANT
+
    @PostMapping("/BuyPlant/{key}/{pid}")
     public ResponseEntity<Bucket> addPlantToCart(@PathVariable("key") String key, @PathVariable("pid") Integer pid) throws CustomerExecption{
         return new ResponseEntity<Bucket>(customerService.addPlantToBucket(pid,key),HttpStatus.CREATED);
    }
+    /*        SEEDS            */
+
+    @PostMapping("/BuySeeds/{key}/{Sid}")
+    public ResponseEntity<Bucket> addSeedsToCart(@PathVariable("key") String key, @PathVariable("Sid") Integer Sid) throws CustomerExecption{
+        return new ResponseEntity<Bucket>(customerService.addSeedsToBucket(Sid,key),HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/DecreaseSeedsQuantity/{key}/{Sid}")
+    public ResponseEntity<Bucket> decreaseQuantityOfSeeds(@PathVariable("key") String key, @PathVariable("Sid") Integer Sid) throws CustomerExecption{
+        return new ResponseEntity<Bucket>(customerService.decreaseQuantityOfSeeds(Sid,key),HttpStatus.CREATED);
+    }
+
+
 
 
 }

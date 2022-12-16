@@ -1,7 +1,9 @@
 package com.treehouse.service.Impl;
 
+import com.treehouse.Repo.AdminLoginRepo;
 import com.treehouse.Repo.PlantRepo;
 import com.treehouse.exception.PlantException;
+import com.treehouse.model.AdminLogin;
 import com.treehouse.model.Plant;
 import com.treehouse.service.PlantService;
 import java.util.List;
@@ -14,34 +16,52 @@ public class PlantServiceImpl implements PlantService {
 
     @Autowired
     private PlantRepo pr;
+    @Autowired
+	private AdminLoginRepo adminLoginRepo;
     
     
     @Override
-    public Plant addPlant(Plant plant) throws PlantException {
-          return pr.save(plant);
+    public Plant addPlant(Plant plant,String key) throws PlantException {
+    	AdminLogin adminLogin=this.adminLogin(key);
+    	if(adminLogin!=null){
+			return pr.save(plant);
+    	}
+    	throw new  PlantException("You are not Authorized ");
+
     }
 
 
 	@Override
-	public Plant updatePlant(Plant plant) throws PlantException {
-		Optional<Plant> s=pr.findById(plant.getPlantId());
-		if(s.isPresent()) {
-			return pr.save(plant);
+	public Plant updatePlant(Plant plant,String key) throws PlantException {
+		AdminLogin adminLogin=this.adminLogin(key);
+		if(adminLogin!=null){
+			Optional<Plant> s=pr.findById(plant.getPlantId());
+			if(s.isPresent()) {
+				return pr.save(plant);
+			}
+			else throw new PlantException("Plant not found with PlantId :"+plant.getPlantId());
 		}
-		else throw new PlantException("Plant not found with PlantId :"+plant.getPlantId());
+		throw new  PlantException("You are not Authorized ");
+
+
 	
 	}
 
 
 	@Override
-	public Plant deletePlant(Integer plantId) throws PlantException {
-		Optional<Plant> s=pr.findById(plantId);
-		if(s.isPresent()) {
-			Plant pt=s.get();
-			pr.delete(pt);
-			return pt;
+	public Plant deletePlant(Integer plantId,String key) throws PlantException {
+		AdminLogin adminLogin=this.adminLogin(key);
+		if(adminLogin!=null){
+			Optional<Plant> s=pr.findById(plantId);
+			if(s.isPresent()) {
+				Plant pt=s.get();
+				pr.delete(pt);
+				return pt;
+			}
+			else throw new PlantException("Plant not found with plantId :"+plantId);
 		}
-		else throw new PlantException("Plant not found with plantId :"+plantId);
+		throw new  PlantException("You are not Authorized ");
+
 	
 	}
 
@@ -79,5 +99,9 @@ public class PlantServiceImpl implements PlantService {
 		if(plants.size()>0)return plants;
 		else throw new PlantException("Plant not found with :"+typeOfPlant);
 	
+	}
+	// checkPermission of the ADmin
+	public AdminLogin adminLogin(String key){
+    	return adminLoginRepo.findByKey(key);
 	}
 }

@@ -19,38 +19,37 @@ import com.treehouse.model.Plant;
 import com.treehouse.service.PlantService;
 
 @RestController
-@RequestMapping("/plant")
+@RequestMapping("/admin/plant")
 public class PlantController {
 
 	@Autowired
 	private PlantService ps;
-	
 
-	@PostMapping("/addPlant")
-	public ResponseEntity<Plant> addPlant(@RequestBody Plant plant)throws PlantException{
-		Plant plant2=ps.addPlant(plant);
+	@PostMapping("/addPlant/{admin_key}")
+	public ResponseEntity<Plant> addPlant(@RequestBody Plant plant,@PathVariable("admin_key") String key)throws PlantException{
+		Plant plant2=ps.addPlant(plant,key);
 		return new ResponseEntity<Plant>(plant2,HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/updatePlant")
-	public ResponseEntity<Plant> updateSeed(@RequestBody Plant plant)throws PlantException{
-		Plant plant2=ps.updatePlant(plant);
+	@PutMapping("/updatePlant/{admin_key}")
+	public ResponseEntity<Plant> updateSeed(@RequestBody Plant plant,@PathVariable("admin_key") String key)throws PlantException{
+		Plant plant2=ps.updatePlant(plant,key);
 		return new ResponseEntity<Plant>(plant2,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/deletePlant/{pid}")
-	public ResponseEntity<Plant> deletePlant(@PathVariable("pid") Integer pid)throws PlantException{
-		Plant plant2=ps.deletePlant(pid);
+	@DeleteMapping("/deletePlant/{pid}/{admin_key}")
+	public ResponseEntity<Plant> deletePlant(@PathVariable("pid") Integer pid,@PathVariable("admin_key") String key)throws PlantException{
+		Plant plant2=ps.deletePlant(pid,key);
 		return new ResponseEntity<Plant>(plant2,HttpStatus.OK);
 	}
 	
-	@GetMapping("/viewPlant/{pid}")
+	@GetMapping("/viewPlantByPid/{pid}")
 	public ResponseEntity<Plant> viewPlant(@PathVariable("pid") Integer pid)throws PlantException{
 		Plant plant2=ps.viewPlant(pid);
 		return new ResponseEntity<Plant>(plant2,HttpStatus.OK);
 	}
 	
-	@GetMapping("/viewPlant/{cn}")
+	@GetMapping("/viewPlantByCommonName/{cn}")
 	public ResponseEntity<List<Plant>>viewPlant(@PathVariable("cn") String cname)throws PlantException{
 		List<Plant> plants=ps.viewPlant(cname);
 		return new ResponseEntity<List<Plant>>(plants,HttpStatus.OK);
@@ -62,7 +61,7 @@ public class PlantController {
 		return new ResponseEntity<List<Plant>>(plants,HttpStatus.OK);
 	}
 	
-	@GetMapping("/viewPlant/{toP}")
+	@GetMapping("/viewPlantByTop/{toP}")
 	public ResponseEntity<List<Plant>> viewPlantsByType(@PathVariable("toP") String TPlants)throws PlantException{
 		List<Plant> plants=ps.viewAllPlant(TPlants);
 		return new ResponseEntity<List<Plant>>(plants,HttpStatus.OK);
