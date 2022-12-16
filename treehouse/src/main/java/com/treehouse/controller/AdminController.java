@@ -57,10 +57,6 @@ public class AdminController {
 
 	// PLANT METHODS
 
-	@PostMapping("/plant/register")
-	public ResponseEntity<Plant> register(@RequestBody Plant plant)throws PlantException{
-		return new ResponseEntity<Plant>(plantService.addPlant(plant),HttpStatus.CREATED);
-	}
 
 
 

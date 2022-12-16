@@ -19,37 +19,37 @@ import com.treehouse.model.Seeds;
 import com.treehouse.service.SeedService;
 
 @RestController
-@RequestMapping("/seeds")
+@RequestMapping("/admin/seeds")
 public class SeedController {
 
 	@Autowired
 	private SeedService ss;
 	
-	@PostMapping("/addSeed")
-	public ResponseEntity<Seeds> addSeed(@RequestBody Seeds seeds)throws SeedException{
-		Seeds seeds2=ss.addSeeds(seeds);
+	@PostMapping("/addSeed/{admin_key}")
+	public ResponseEntity<Seeds> addSeed(@RequestBody Seeds seeds,@PathVariable("admin_key") String key)throws SeedException{
+		Seeds seeds2=ss.addSeeds(seeds,key);
 		return new ResponseEntity<Seeds>(seeds2,HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/updateSeed")
-	public ResponseEntity<Seeds> updateSeed(@RequestBody Seeds seeds)throws SeedException{
-		Seeds seeds2=ss.updateSeeds(seeds);
+	@PutMapping("/updateSeed/{admin_key}")
+	public ResponseEntity<Seeds> updateSeed(@RequestBody Seeds seeds,@PathVariable("admin_key") String key)throws SeedException{
+		Seeds seeds2=ss.updateSeeds(seeds,key);
 		return new ResponseEntity<Seeds>(seeds2,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/deleteSeed/{sid}")
-	public ResponseEntity<Seeds> deleteSeed(@PathVariable("sid") Integer sid)throws SeedException{
-		Seeds seeds2=ss.deleteSeeds(sid);
+	@DeleteMapping("/deleteSeed/{sid}/{admin_key}")
+	public ResponseEntity<Seeds> deleteSeed(@PathVariable("sid") Integer sid,@PathVariable("admin_key") String key)throws SeedException{
+		Seeds seeds2=ss.deleteSeeds(sid,key);
 		return new ResponseEntity<Seeds>(seeds2,HttpStatus.OK);
 	}
 	
-	@GetMapping("/viewSeed/{sid}")
+	@GetMapping("/viewSeedBySid/{sid}")
 	public ResponseEntity<Seeds> viewSeed(@PathVariable("sid") Integer sid)throws SeedException{
 		Seeds seeds2=ss.viewSeeds(sid);
 		return new ResponseEntity<Seeds>(seeds2,HttpStatus.OK);
 	}
 	
-	@GetMapping("/viewSeed/{cn}")
+	@GetMapping("/viewSeedCommonName/{cn}")
 	public ResponseEntity<List<Seeds>>viewSeeds(@PathVariable("cn") String cname)throws SeedException{
 		List<Seeds> seeds2=ss.viewSeeds(cname);
 		return new ResponseEntity<List<Seeds>>(seeds2,HttpStatus.OK);
@@ -61,11 +61,10 @@ public class SeedController {
 		return new ResponseEntity<List<Seeds>>(seeds2,HttpStatus.OK);
 	}
 	
-	@GetMapping("/viewSeed/{tos}")
+	@GetMapping("/viewSeedTypeOfTos/{tos}")
 	public ResponseEntity<List<Seeds>>viewSeedsByType(@PathVariable("tos") String TSeeds)throws SeedException{
 		List<Seeds> seeds2=ss.viewAllSeeds(TSeeds);
 		return new ResponseEntity<List<Seeds>>(seeds2,HttpStatus.OK);
 	}
-	
-	
+
 }

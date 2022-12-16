@@ -31,5 +31,6 @@ public class Seeds {
     private Integer SeedsStock;
     private Integer SeedsCost;
     private Integer SeedsPerPacket;
+    private Integer SeedsQuantity;
 
 }
