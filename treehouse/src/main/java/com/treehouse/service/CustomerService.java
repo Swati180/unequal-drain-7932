@@ -1,8 +1,7 @@
 package com.treehouse.service;
 
 import com.treehouse.exception.CustomerExecption;
-import com.treehouse.model.Customer;
-import com.treehouse.model.CustomerLogin;
+import com.treehouse.model.*;
 import com.treehouse.model.DTO.CustomerDTO;
 import com.treehouse.model.DTO.CustomerLoginDto;
 
@@ -13,9 +12,13 @@ public interface CustomerService {
 
     public Customer updateCustomer(CustomerDTO customerDTO,Integer customerId) throws  CustomerExecption;
     public Customer deleteCustomer(Integer id) throws CustomerExecption;
-    public List<Customer> getAllCustomer() throws  CustomerExecption;
+    public List<Customer> getAllCustomer(String token) throws  CustomerExecption;
     public Customer getCustomerById(Integer id) throws CustomerExecption;
     public CustomerLogin loginCustomer(CustomerLoginDto customerLoginDto) throws  CustomerExecption;
+    public CustomerLogin logoutCustomer(String key) throws CustomerExecption;
+    public Bucket addPlantToBucket(Integer plantId,String key) throws CustomerExecption;
+    public Bucket addPlanterToBucket(Planter planter, String key) throws CustomerExecption;
+    public Bucket addSeedsToBucket(Seeds seeds,String key) throws CustomerExecption;
 
 
 }
