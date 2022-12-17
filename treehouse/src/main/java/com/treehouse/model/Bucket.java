@@ -1,8 +1,9 @@
 package com.treehouse.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.treehouse.model.DTO.PlantDto;
+import com.treehouse.model.DTO.SeedsDto;
+import lombok.*;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@Getter
+@Setter
 public class Bucket {
 
     @Id
@@ -24,18 +27,18 @@ public class Bucket {
     private Integer plantQuantity;
     private Integer planterQuantity;
     private Integer seedsQuantity;
+    private Integer totalItems;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Planter> planters = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Plant> plants = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<PlantDto> plants = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Seeds> seeds = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<SeedsDto> seeds = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private Order orders;
-
 
 }

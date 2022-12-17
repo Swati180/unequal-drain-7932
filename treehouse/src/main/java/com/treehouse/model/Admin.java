@@ -2,12 +2,8 @@ package com.treehouse.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 
@@ -28,6 +24,7 @@ public class Admin {
     private String adminName;
 
    @Email(message = "Please provide valid email")
+   @Column(unique = true)
     private String adminEmail;
    
    @Size(min=4,max=6,message = "Please provide character between 4-6")

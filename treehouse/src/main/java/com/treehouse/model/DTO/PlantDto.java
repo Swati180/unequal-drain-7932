@@ -1,4 +1,4 @@
-package com.treehouse.model;
+package com.treehouse.model.DTO;
 
 import lombok.*;
 
@@ -12,9 +12,8 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Plant {
+public class PlantDto {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer plantId;
     private Integer plantHeight;
     private String plantSpread;
@@ -27,6 +26,4 @@ public class Plant {
     private String plantsStock;
     private Integer plantCost;
     private Integer plantQuantity;
-
-
 }
