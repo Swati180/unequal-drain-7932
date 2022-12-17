@@ -38,7 +38,40 @@ public class GlobalException {
 		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
 
 	}
-	
+	@ExceptionHandler(PlanterException.class)
+	public ResponseEntity<MyErrorDetails> myExceptionHandler(PlanterException ie, WebRequest rq) {
+
+		MyErrorDetails err = new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(ie.getMessage());
+		err.setDetails(rq.getDescription(false));
+
+		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
+
+	}
+
+	@ExceptionHandler(PlantException.class)
+	public ResponseEntity<MyErrorDetails> myExceptionHandler(PlantException ie, WebRequest rq) {
+
+		MyErrorDetails err = new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(ie.getMessage());
+		err.setDetails(rq.getDescription(false));
+
+		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
+
+	}
+	@ExceptionHandler(SeedException.class)
+	public ResponseEntity<MyErrorDetails> myExceptionHandler(SeedException ie, WebRequest rq) {
+
+		MyErrorDetails err = new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(ie.getMessage());
+		err.setDetails(rq.getDescription(false));
+
+		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
+
+	}
 	
 
 	@ExceptionHandler(Exception.class)
