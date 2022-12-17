@@ -1,6 +1,7 @@
 package com.treehouse.model;
 
 import com.treehouse.model.DTO.PlantDto;
+import com.treehouse.model.DTO.PlanterDto;
 import com.treehouse.model.DTO.SeedsDto;
 import lombok.*;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ public class Bucket {
     private Integer totalItems;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Planter> planters = new ArrayList<>();
+    private List<PlanterDto> planters = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<PlantDto> plants = new ArrayList<>();

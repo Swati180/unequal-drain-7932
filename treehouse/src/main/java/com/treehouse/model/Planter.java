@@ -27,10 +27,11 @@ public class Planter {
     private Integer PlanterId;
     private Integer PlanterHeight;
     private Integer PlanterCapacity;
-    private Integer DrinageHoles;
-    private Integer PlanterColor;
+    private Integer DrainHoles;
+    private String PlanterColor;
     private String  PlanterShape;
     private Integer PlanterStock;
     private Integer PlanterCost;
+    private Integer PlanterQuantity;
 
 }
