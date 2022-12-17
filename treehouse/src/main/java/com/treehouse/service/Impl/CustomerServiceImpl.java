@@ -10,7 +10,7 @@ import com.treehouse.model.DTO.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.treehouse.exception.CustomerExecption;
+import com.treehouse.exception.CustomerException;
 import com.treehouse.service.CustomerService;
 
 import net.bytebuddy.utility.RandomString;
@@ -38,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private PlanterDtoRepo planterDtoRepo;
     @Override
-    public Customer registerCustomer(CustomerDTO customer) throws CustomerExecption {
+    public Customer registerCustomer(CustomerDTO customer) throws CustomerException {
 
         Customer customer1 = new Customer();
         customer1.setEmail(customer.getEmail());
@@ -51,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer updateCustomer(CustomerDTO customerDTO, Integer customerId) throws CustomerExecption {
+    public Customer updateCustomer(CustomerDTO customerDTO, Integer customerId) throws CustomerException {
 
 
 
@@ -69,13 +69,13 @@ public class CustomerServiceImpl implements CustomerService {
 
         }
 
-        throw new CustomerExecption("ID is not Valid");
+        throw new CustomerException("ID is not Valid");
 
 
     }
 
     @Override
-    public Customer deleteCustomer(Integer id) throws CustomerExecption {
+    public Customer deleteCustomer(Integer id) throws CustomerException {
 
 
             Optional<Customer> customerOptional = customerRepo.findById(id);
@@ -91,32 +91,32 @@ public class CustomerServiceImpl implements CustomerService {
 
                 return customerOptional.get();
             }
-            throw new CustomerExecption("Pass the valid ID");
+            throw new CustomerException("Pass the valid ID");
 
 
     }
 
     @Override
-    public List<Customer> getAllCustomer(String token) throws CustomerExecption {
+    public List<Customer> getAllCustomer(String token) throws CustomerException {
 
         AdminLogin al = adminLoginRepo.findByKey(token);
         if(al!=null){
             return customerRepo.findAll();
         }
-        throw new CustomerExecption("You are not Authorized");
+        throw new CustomerException("You are not Authorized");
     }
 
     @Override
-    public Customer getCustomerById(Integer id) throws CustomerExecption {
+    public Customer getCustomerById(Integer id) throws CustomerException {
         Optional<Customer> customerOptional = customerRepo.findById(id);
         if(customerOptional.isPresent()){
             return customerOptional.get();
         }
-        throw new CustomerExecption("valid not found");
+        throw new CustomerException("valid not found");
     }
 
     @Override
-    public CustomerLogin loginCustomer(CustomerLoginDto customerLoginDto) throws CustomerExecption {
+    public CustomerLogin loginCustomer(CustomerLoginDto customerLoginDto) throws CustomerException {
 
         Customer customer = customerRepo.findByEmailAndPassword(customerLoginDto.getEmail(), customerLoginDto.getPassword());
         if(customer != null){
@@ -127,23 +127,23 @@ public class CustomerServiceImpl implements CustomerService {
             customerLogin.setCustomerId(customer.getCustomerId());
             return customerLoginRepo.save(customerLogin);
         }
-        throw new CustomerExecption ("Details Entered Wrong");
+        throw new CustomerException("Details Entered Wrong");
 
 
     }
 
     @Override
-    public CustomerLogin logoutCustomer(String key) throws CustomerExecption {
+    public CustomerLogin logoutCustomer(String key) throws CustomerException {
         CustomerLogin customerLogin=customerLoginRepo.findByKey(key);
         if(customerLogin!=null){
             customerLoginRepo.delete(customerLogin);
             return customerLogin;
         }
-        throw new CustomerExecption("please enter Valid key");
+        throw new CustomerException("please enter Valid key");
     }
 
     @Override
-    public Bucket addPlantToBucket(Integer plantId, String key) throws CustomerExecption {
+    public Bucket addPlantToBucket(Integer plantId, String key) throws CustomerException {
 
         CustomerLogin customerLogin =  this.checkPermission(key);
         Optional<Plant> optionalPlant = plantRepo.findById(plantId);
@@ -263,11 +263,11 @@ public class CustomerServiceImpl implements CustomerService {
 
             }
         }
-        throw new CustomerExecption("Either Your Login Key or Plant detail is not correct");
+        throw new CustomerException("Either Your Login Key or Plant detail is not correct");
     }
 
     @Override
-    public Bucket addPlanterToBucket(Integer planterId, String key) throws CustomerExecption {
+    public Bucket addPlanterToBucket(Integer planterId, String key) throws CustomerException {
         CustomerLogin customerLogin =  this.checkPermission(key);
         Optional<Planter> optionalPlanter = planterRepo.findById(planterId);
         if(customerLogin != null && optionalPlanter.isPresent()){
@@ -383,12 +383,12 @@ public class CustomerServiceImpl implements CustomerService {
 
             }
         }
-        throw new CustomerExecption("Either Your Login Key or Plant detail is not correct");
+        throw new CustomerException("Either Your Login Key or Plant detail is not correct");
 
     }
 
     @Override
-    public Bucket addSeedsToBucket(Integer seedsId, String key) throws CustomerExecption {
+    public Bucket addSeedsToBucket(Integer seedsId, String key) throws CustomerException {
         CustomerLogin customerLogin =  this.checkPermission(key);
         Optional<Seeds> optionalSeeds = seedRepo.findById(seedsId);
         if(customerLogin != null && optionalSeeds.isPresent()){
@@ -501,12 +501,12 @@ public class CustomerServiceImpl implements CustomerService {
 
             }
         }
-        throw new CustomerExecption("Either Your Login Key or Seeds detail is not correct");
+        throw new CustomerException("Either Your Login Key or Seeds detail is not correct");
 
     }
 
     @Override
-    public Bucket decreaseQuantityOfSeeds(Integer seedsID, String key) throws CustomerExecption {
+    public Bucket decreaseQuantityOfSeeds(Integer seedsID, String key) throws CustomerException {
         CustomerLogin customerLogin = this.checkPermission(key);
         Optional<Seeds> optionalSeeds = seedRepo.findById(seedsID);
         Seeds seeds = optionalSeeds.get();
@@ -550,19 +550,19 @@ public class CustomerServiceImpl implements CustomerService {
 //                        System.out.println(bucket1);
                     return customerRepo.save(optionalCustomer1.get()).getBucket();
                 } else {
-                    throw new CustomerExecption("Seeds not present");
+                    throw new CustomerException("Seeds not present");
                 }
             } else {
-                throw new CustomerExecption("Cart is Empty");
+                throw new CustomerException("Cart is Empty");
             }
         }
-        throw new CustomerExecption("Empty");
+        throw new CustomerException("Empty");
 
 
     }
 
     @Override
-    public Bucket decreaseQuantityOfPlant(Integer plantID, String key) throws CustomerExecption {
+    public Bucket decreaseQuantityOfPlant(Integer plantID, String key) throws CustomerException {
         CustomerLogin customerLogin = this.checkPermission(key);
         Optional<Plant> optionalplants = plantRepo.findById(plantID);
         Plant plants = optionalplants.get();
@@ -609,18 +609,18 @@ public class CustomerServiceImpl implements CustomerService {
 //                        System.out.println(bucket1);
                     return customerRepo.save(optionalCustomer1.get()).getBucket();
                 } else {
-                    throw new CustomerExecption("Plant not present");
+                    throw new CustomerException("Plant not present");
                 }
             } else {
-                throw new CustomerExecption("Cart is Empty");
+                throw new CustomerException("Cart is Empty");
             }
         }
-        throw new CustomerExecption("Empty");
+        throw new CustomerException("Empty");
 
     }
 
     @Override
-    public Bucket decreaseQuantityOfPlanter(Integer planterID, String key) throws CustomerExecption {
+    public Bucket decreaseQuantityOfPlanter(Integer planterID, String key) throws CustomerException {
         CustomerLogin customerLogin = this.checkPermission(key);
         Optional<Planter> optionalplants = planterRepo.findById(planterID);
         Planter plants = optionalplants.get();
@@ -667,13 +667,13 @@ public class CustomerServiceImpl implements CustomerService {
 //                        System.out.println(bucket1);
                     return customerRepo.save(optionalCustomer1.get()).getBucket();
                 } else {
-                    throw new CustomerExecption("Planter not present");
+                    throw new CustomerException("Planter not present");
                 }
             } else {
-                throw new CustomerExecption("Cart is Empty");
+                throw new CustomerException("Cart is Empty");
             }
         }
-        throw new CustomerExecption("Empty");
+        throw new CustomerException("Empty");
     }
 
     // checkPermission Method

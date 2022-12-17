@@ -1,4 +1,4 @@
-package com.treehouse.model;
+package com.treehouse.globalException;
 
 import java.time.LocalDateTime;
 

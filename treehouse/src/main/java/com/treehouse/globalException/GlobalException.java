@@ -1,7 +1,8 @@
-package com.treehouse.exception;
+package com.treehouse.globalException;
 
 import java.time.LocalDateTime;
 
+import com.treehouse.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,8 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
-import com.treehouse.model.MyErrorDetails;
 
 @ControllerAdvice
 public class GlobalException {
@@ -27,8 +26,8 @@ public class GlobalException {
 
 	}
 	
-	@ExceptionHandler(CustomerExecption.class)
-	public ResponseEntity<MyErrorDetails> myExceptionHandler(CustomerExecption ie, WebRequest rq) {
+	@ExceptionHandler(CustomerException.class)
+	public ResponseEntity<MyErrorDetails> myExceptionHandler(CustomerException ie, WebRequest rq) {
 
 		MyErrorDetails err = new MyErrorDetails();
 		err.setTimestamp(LocalDateTime.now());
