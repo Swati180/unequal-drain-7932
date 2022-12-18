@@ -17,12 +17,11 @@ public interface CustomerService {
     public CustomerLogin loginCustomer(CustomerLoginDto customerLoginDto) throws  CustomerExecption;
     public CustomerLogin logoutCustomer(String key) throws CustomerExecption;
     public Bucket addPlantToBucket(Integer plantId,String key) throws CustomerExecption;
-    public Bucket addPlanterToBucket(Integer planterId, String key) throws CustomerExecption;
+    public Bucket addPlanterToBucket(Planter planter, String key) throws CustomerExecption;
     public Bucket addSeedsToBucket(Integer seedsId,String key) throws CustomerExecption;
     public Bucket decreaseQuantityOfSeeds(Integer seedsID,String key) throws CustomerExecption;
     public Bucket decreaseQuantityOfPlant(Integer plantID,String key) throws CustomerExecption;
     public Bucket decreaseQuantityOfPlanter(Integer planterID,String key) throws CustomerExecption;
-
 
 
 }

@@ -5,15 +5,14 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.Cascade;
+import javax.persistence.OneToOne;
 
 @Entity
 @Data
@@ -21,16 +20,23 @@ import org.hibernate.annotations.Cascade;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Planter {
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer PlanterId;
-    private Integer PlanterHeight;
-    private Integer PlanterCapacity;
-    private Integer DrinageHoles;
-    private Integer PlanterColor;
-    private String  PlanterShape;
-    private Integer PlanterStock;
-    private Integer PlanterCost;
+    private Integer orderId;
+    
+    private LocalDate OrderDate;
+    
+    private String transactionMode;
+    
+    private Integer quantity;
+    
+    private Double totalCost;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    private Planter planter;
+
+
+
 
 }
