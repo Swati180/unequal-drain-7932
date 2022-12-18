@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,11 +22,11 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping("/register")
-    public ResponseEntity<Customer> registerCustomer (@Valid @RequestBody CustomerDTO customerDTO) throws CustomerExecption {
+    public ResponseEntity<Customer> registerCustomer(@RequestBody CustomerDTO customerDTO) throws CustomerExecption {
         return new ResponseEntity<Customer>(customerService.registerCustomer(customerDTO),HttpStatus.CREATED);
     }
     @PostMapping("/login")
-    public ResponseEntity<CustomerLogin> loginCustomer(@Valid @RequestBody CustomerLoginDto customerLoginDto) throws CustomerExecption {
+    public ResponseEntity<CustomerLogin> loginCustomer(@RequestBody CustomerLoginDto customerLoginDto) throws CustomerExecption {
         return new ResponseEntity<>(customerService.loginCustomer(customerLoginDto),HttpStatus.OK);
     }
    @GetMapping("/{id}")
@@ -60,25 +59,11 @@ public class CustomerController {
         return new ResponseEntity<Bucket>(customerService.addSeedsToBucket(Sid,key),HttpStatus.CREATED);
     }
 
-    @PostMapping("/BuyPlanters/{key}/{PLid}")
-    public ResponseEntity<Bucket> addPlantersToCart(@PathVariable("key") String key, @PathVariable("PLid") Integer PLid) throws CustomerExecption{
-        return new ResponseEntity<Bucket>(customerService.addPlanterToBucket(PLid,key),HttpStatus.CREATED);
-    }
-
     @DeleteMapping("/DecreaseSeedsQuantity/{key}/{Sid}")
     public ResponseEntity<Bucket> decreaseQuantityOfSeeds(@PathVariable("key") String key, @PathVariable("Sid") Integer Sid) throws CustomerExecption{
         return new ResponseEntity<Bucket>(customerService.decreaseQuantityOfSeeds(Sid,key),HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/DecreasePlantsQuantity/{key}/{Pid}")
-    public ResponseEntity<Bucket> decreaseQuantityOfPlants(@PathVariable("key") String key, @PathVariable("Pid") Integer Pid) throws CustomerExecption{
-        return new ResponseEntity<Bucket>(customerService.decreaseQuantityOfPlant(Pid,key),HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/DecreasePlantersQuantity/{key}/{PLid}")
-    public ResponseEntity<Bucket> decreaseQuantityOfPlanters(@PathVariable("key") String key, @PathVariable("PLid") Integer PLid) throws CustomerExecption{
-        return new ResponseEntity<Bucket>(customerService.decreaseQuantityOfPlanter(PLid,key),HttpStatus.CREATED);
-    }
 
 
 
