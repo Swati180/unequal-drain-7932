@@ -6,10 +6,13 @@ import com.treehouse.exception.PlantException;
 import com.treehouse.model.AdminLogin;
 import com.treehouse.model.Plant;
 import com.treehouse.service.PlantService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Service
 public class PlantServiceImpl implements PlantService {
@@ -42,8 +45,6 @@ public class PlantServiceImpl implements PlantService {
 			else throw new PlantException("Plant not found with PlantId :"+plant.getPlantId());
 		}
 		throw new  PlantException("You are not Authorized ");
-
-
 	
 	}
 
@@ -85,11 +86,15 @@ public class PlantServiceImpl implements PlantService {
 
 	@Override
 	public List<Plant> viewAllPlants() throws PlantException {
-		
+
 		List<Plant> plants=pr.findAll();
-		if(plants.size()>0)return plants;
-        else throw new PlantException("Plants not founds");
-	
+		List<Plant> list=new ArrayList<>();
+		for(Plant i:plants){
+			String download= ServletUriComponentsBuilder.fromCurrentContextPath().path("/target/static/images/").path(i.getPlantImage()).toUriString();
+			i.setPlantImage(download);
+			list.add(i);
+		}
+		return  list;
 	}
 
 	@Override
