@@ -32,5 +32,6 @@ public class Seeds {
     private Integer SeedsCost;
     private Integer SeedsPerPacket;
     private Integer SeedsQuantity;
+    private String seedsImage;
 
 }

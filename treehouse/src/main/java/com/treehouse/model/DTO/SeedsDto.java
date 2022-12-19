@@ -27,5 +27,6 @@ public class SeedsDto {
         private Integer SeedsCost;
         private Integer SeedsPerPacket;
         private Integer SeedsQuantity;
+        private String  seedsImage;
 
     }

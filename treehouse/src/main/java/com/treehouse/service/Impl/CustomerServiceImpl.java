@@ -163,6 +163,7 @@ public class CustomerServiceImpl implements CustomerService {
             plant.setMedicinalOrCulinaryUse(plants.getMedicinalOrCulinaryUse());
             plant.setPlantsStock(plants.getPlantsStock());
             plant.setTypeOfPlant(plants.getTypeOfPlant());
+            plant.setPlantImage(plants.getPlantImage());
 
             boolean flag=false;
             int count=0;
@@ -213,6 +214,7 @@ public class CustomerServiceImpl implements CustomerService {
                     plant.setPlantQuantity(1);
                     plantDtoRepo.save(plant);
                     bucket.getPlants().add(plant);
+
                     if(bucket.getPlantPrice()!=null){
                         bucket.setPlantPrice(bucket.getPlantPrice()+plant.getPlantCost());
                     }
@@ -284,6 +286,7 @@ public class CustomerServiceImpl implements CustomerService {
             plant.setPlanterShape(plants.getPlanterShape());
             plant.setPlanterStock(plants.getPlanterStock());
             plant.setDrainHoles(plants.getDrainHoles());
+            plant.setPlanterImage(plants.getPlanterImage());
 
             boolean flag=false;
             int count=0;
@@ -407,6 +410,7 @@ public class CustomerServiceImpl implements CustomerService {
             seeds.setDifficultyLevel(seed.getTemperature());
             seeds.setWatering(seed.getWatering());
             seeds.setTemperature(seed.getTemperature());
+            seeds.setSeedsImage(seed.getSeedsImage());
 
             boolean flag=false;
             if(bucket != null){

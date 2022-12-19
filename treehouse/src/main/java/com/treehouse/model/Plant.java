@@ -27,6 +27,7 @@ public class Plant {
     private String plantsStock;
     private Integer plantCost;
     private Integer plantQuantity;
+    private String plantImage;
 
 
 }

@@ -1,7 +1,6 @@
 package com.treehouse.controller;
 
-import com.treehouse.exception.PlantException;
-import com.treehouse.model.Plant;
+
 import com.treehouse.service.PlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,9 @@ public class AdminController {
 	private AdminService adservice;
 	@Autowired
 	private PlantService plantService;
-	
+
+
+
 	@PostMapping("/register")
 	public ResponseEntity<Admin> registerAdmin(@RequestBody Admin admin) throws AdminException {
 		

@@ -26,5 +26,6 @@ public class PlanterDto{
         private Integer PlanterStock;
         private Integer PlanterCost;
         private Integer PlanterQuantity;
+        private String planterImage;
 
 }
